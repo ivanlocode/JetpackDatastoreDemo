@@ -41,6 +41,7 @@ fun PersonDetailUI(
     val ageInput = remember { mutableStateOf(0) }
     val isLoadDataFirstTime = remember { mutableStateOf(true) }
 
+    //Once the savedPersonModel is loaded from Coroutine the block of code will execute and refresh the UI compose
     if (isLoadDataFirstTime.value && savedPersonModel.value.firstname.isNotEmpty()) {
         Toast.makeText(context, "Loaded from datastore", Toast.LENGTH_SHORT).show()
         firstnameInput.value = savedPersonModel.value.firstname
