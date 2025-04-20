@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -40,6 +41,9 @@ fun PersonDetailUI(
     val surnameInput = remember { mutableStateOf("") }
     val ageInput = remember { mutableStateOf(0) }
     val isLoadDataFirstTime = remember { mutableStateOf(true) }
+
+
+    val coroutineScope = rememberCoroutineScope()
 
     //Once the savedPersonModel is loaded from Coroutine the block of code will execute and refresh the UI compose
     if (isLoadDataFirstTime.value && savedPersonModel.value.firstname.isNotEmpty()) {
@@ -102,11 +106,10 @@ fun PersonDetailUI(
         OutlinedButton(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             onClick = {
-                CoroutineScope(Dispatchers.IO).launch {
+                coroutineScope.launch {
                     personDataStore.savePersonModel(PersonModel(firstname = firstnameInput.value, surname = surnameInput.value, age = ageInput.value))
                 }
                 Toast.makeText(context, "Data saved to Datastore", Toast.LENGTH_SHORT).show()
-
             }
         ) {
             Text(
